@@ -1,23 +1,19 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import { counterActions } from './store';
 
 function App() {
+  const dispatch = useDispatch();
+  const [increaseBy, setIncreaseBy] = useState(0);
+  const counter = useSelector((state) => state.counter.value);
+  const isDisabled = counter <= 0 ? true: false;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>Counter: {counter}</p>
+      <input type="number" onChange={(e) => setIncreaseBy(+e.target.value)}/>
+      <button onClick={() => dispatch(counterActions.increment(increaseBy))}>Increment</button>
+      <button onClick={() => dispatch(counterActions.decrement())} disabled={isDisabled}>Decrement</button>
     </div>
   );
 }
